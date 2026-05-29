@@ -1,0 +1,547 @@
+LIBRARY MANAGEMENT SYSTEM - TEST SCENARIOS AND EXAMPLES
+
+This document provides detailed test scenarios and expected outputs for all features.
+
+
+TEST SCENARIO 1: ADD BOOKS TO LIBRARY
+=====================================
+
+Objective: Add multiple books to the library system
+
+Test Case 1.1 - Add First Book
+Steps:
+1. Select option 1 (Add New Book)
+2. Enter Title: "The Great Gatsby"
+3. Enter Author: "F. Scott Fitzgerald"
+4. Enter ISBN: "978-0-7432-7356-5"
+5. Enter Quantity: 5
+6. Enter Price: 250
+
+Expected Result:
+- Book Added Successfully message
+- Book ID: 1001 assigned
+- 5 copies available in library
+
+Validation:
+- Use option 2 to verify book appears in list
+
+
+Test Case 1.2 - Add Multiple Books
+Steps:
+1. Add Book 2: "1984" by George Orwell, ISBN 978-0-451-52493-2, 3 copies, 300 Rs
+2. Add Book 3: "To Kill a Mockingbird" by Harper Lee, ISBN 978-0-06-112008-4, 4 copies, 280 Rs
+3. Add Book 4: "Pride and Prejudice" by Jane Austen, ISBN 978-0-14-143951-8, 6 copies, 200 Rs
+
+Expected Book IDs:
+- "1984" - Book ID: 1002
+- "To Kill a Mockingbird" - Book ID: 1003
+- "Pride and Prejudice" - Book ID: 1004
+
+Validation:
+- All books appear in Display All Books
+- Availability shows total and available quantities
+
+
+TEST SCENARIO 2: REGISTER MEMBERS
+==================================
+
+Objective: Register library members
+
+Test Case 2.1 - Register First Member
+Steps:
+1. Select option 5 (Register New Member)
+2. Enter Name: "Alice Johnson"
+3. Enter Email: "alice@email.com"
+4. Enter Phone: "9876543210"
+5. Enter Address: "123 Main Street, City"
+
+Expected Result:
+- Member Registered Successfully message
+- Member ID: 2001 assigned
+- Membership Date: Current date
+- Books Issued: 0/3
+
+Validation:
+- Member appears in Display All Members
+
+
+Test Case 2.2 - Register Multiple Members
+Steps:
+1. Register Member 2: "Bob Smith", "bob@email.com", "9876543211", "456 Oak Avenue"
+2. Register Member 3: "Carol White", "carol@email.com", "9876543212", "789 Pine Road"
+3. Register Member 4: "David Brown", "david@email.com", "9876543213", "321 Elm Street"
+
+Expected Member IDs:
+- Bob Smith - Member ID: 2002
+- Carol White - Member ID: 2003
+- David Brown - Member ID: 2004
+
+
+TEST SCENARIO 3: SEARCH FUNCTIONALITY
+======================================
+
+Test Case 3.1 - Search by Title
+Objective: Find books by title matching
+
+Steps:
+1. Select option 3 (Search Book by Title)
+2. Enter Search: "Great"
+
+Expected Result:
+- Displays "The Great Gatsby"
+- Shows: Book ID 1001, Author F. Scott Fitzgerald, 5/5 available
+
+Test Case 3.2 - Search by Author
+Objective: Find all books by specific author
+
+Steps:
+1. Select option 4 (Search Book by Author)
+2. Enter Author: "Fitzgerald"
+
+Expected Result:
+- Shows all books by F. Scott Fitzgerald
+- "The Great Gatsby" - Book ID: 1001, 5 copies available
+
+Test Case 3.3 - Partial Search
+Objective: Test partial matching
+
+Steps:
+1. Search by Title: "and" (partial word)
+
+Expected Results Found:
+- "To Kill a Mockingbird"
+- "Pride and Prejudice"
+
+Test Case 3.4 - No Results Search
+Objective: Verify handling of no search results
+
+Steps:
+1. Search by Author: "Unknown Author"
+
+Expected Result:
+- Message: "No books by author 'Unknown Author' found!"
+
+
+TEST SCENARIO 4: ISSUE BOOKS
+=============================
+
+Test Case 4.1 - Simple Book Issue
+Objective: Issue one book to member
+
+Steps:
+1. Select option 7 (Issue Book)
+2. Enter Member ID: 2001 (Alice Johnson)
+3. Enter Book ID: 1001 (The Great Gatsby)
+
+Expected Result:
+- Book Issued Successfully message
+- Issue Record ID: 5001
+- Due Date: 14 days from today
+- Alice's books issued count: 1/3
+
+Validation:
+- Book availability changes from 5/5 to 4/5
+- Member books issued changes from 0/3 to 1/3
+
+
+Test Case 4.2 - Multiple Issues to Same Member
+Objective: Issue multiple books to one member (within limit)
+
+Steps:
+1. Issue Book 1002 to Member 2001 (Alice) - Record ID: 5002
+2. Issue Book 1003 to Member 2001 (Alice) - Record ID: 5003
+
+Expected Result:
+- Both issues successful
+- Alice now has 3/3 books
+- Each book gets unique issue record ID
+- Each gets 14-day due date
+
+
+Test Case 4.3 - Issue Exceeds Limit
+Objective: Verify 3-book limit enforcement
+
+Steps:
+1. Alice already has 3 books issued
+2. Try to issue Book 1004 to Member 2001
+
+Expected Result:
+- Message: "Member has already issued 3 books (maximum limit reached)!"
+- Book 1004 not issued
+- Alice still has 3/3 books
+
+
+Test Case 4.4 - Issue from Unavailable Book
+Objective: Verify unavailable book handling
+
+Prerequisites: Book 1001 has only 5 copies, all 5 already issued
+
+Steps:
+1. Try to issue Book 1001 to Member 2002 (Bob Smith)
+
+Expected Result:
+- Message: "Book is not available!"
+- Issue fails
+- Bob still has 0 books
+
+
+TEST SCENARIO 5: RETURN BOOKS
+==============================
+
+Test Case 5.1 - Simple Book Return
+Objective: Return issued book
+
+Prerequisites: Alice has Record ID 5001 issued
+
+Steps:
+1. Select option 8 (Return Book)
+2. Enter Issue Record ID: 5001
+
+Expected Result:
+- Book Returned Successfully message
+- Return Date: Today's date
+- Book availability increases from 4/5 to 5/5
+- Alice's count decreases from 3/3 to 2/3
+
+
+Test Case 5.2 - Multiple Returns
+Objective: Return multiple books in sequence
+
+Prerequisites: Alice has Records 5002 and 5003 issued
+
+Steps:
+1. Return Record 5002
+2. Return Record 5003
+
+Expected Results:
+- Both returns successful
+- Both books availability increased
+- Alice's count: 2/3 -> 1/3 -> 0/3
+
+
+Test Case 5.3 - Return Invalid Record
+Objective: Attempt to return non-existent record
+
+Steps:
+1. Try to return Record ID: 9999
+
+Expected Result:
+- Message: "Issue record not found or already returned!"
+- No changes to any data
+
+
+TEST SCENARIO 6: VIEW ALL OPERATIONS
+=====================================
+
+Test Case 6.1 - Display All Books
+Objective: View complete book inventory
+
+Steps:
+1. Select option 2 (Display All Books)
+
+Expected Output Format:
+   ID  |  Title                    |  Author               | Available
+   1001| The Great Gatsby          | F. Scott Fitzgerald   | 4/5
+   1002| 1984                      | George Orwell         | 2/3
+   1003| To Kill a Mockingbird     | Harper Lee            | 3/4
+   1004| Pride and Prejudice       | Jane Austen           | 6/6
+
+Validation:
+- All added books appear
+- Availability counts correct
+- Format is readable
+
+
+Test Case 6.2 - Display All Members
+Objective: View all registered members
+
+Steps:
+1. Select option 6 (Display All Members)
+
+Expected Output:
+   ID   | Name          | Email              | Books
+   2001 | Alice Johnson | alice@email.com    | 2/3
+   2002 | Bob Smith     | bob@email.com      | 1/3
+   2003 | Carol White   | carol@email.com    | 0/3
+   2004 | David Brown   | david@email.com    | 0/3
+
+
+Test Case 6.3 - View Issued Books
+Objective: Track currently borrowed books
+
+Steps:
+1. Select option 9 (View Issued Books)
+
+Expected Output:
+   RecID | MID  | BID  | Issue Date | Due Date    | Status
+   5001  | 2001 | 1001 | DD-MM-YYYY | DD-MM-YYYY  | Returned
+   5002  | 2001 | 1002 | DD-MM-YYYY | DD-MM-YYYY  | Issued
+   5003  | 2001 | 1003 | DD-MM-YYYY | DD-MM-YYYY  | Issued
+
+Only currently issued books shown
+
+
+TEST SCENARIO 7: DATA PERSISTENCE
+==================================
+
+Objective: Verify data survives application restart
+
+Steps:
+1. Add 4 books
+2. Register 4 members
+3. Issue 5 books
+4. Return 1 book
+5. Note down all IDs and statuses
+6. Exit application (option 10)
+7. Restart application
+8. Check all data
+
+Expected Result:
+- All books present with same data
+- All members present with same count
+- All books have correct availability
+- Issue records preserved
+- Return statuses preserved
+
+Validation:
+- Next book ID generated: 1005
+- Next member ID generated: 2005
+- Next record ID generated: 5006
+
+
+TEST SCENARIO 8: EDGE CASES
+============================
+
+Test Case 8.1 - Single Book Multiple Issues
+Objective: Issue last copy of book
+
+Prerequisites: Book with 1 total copy
+
+Steps:
+1. Issue the only copy to Member 2001
+2. Try to issue same book to Member 2002
+
+Expected Result:
+- First issue succeeds
+- Second issue fails with "Book is not available!"
+- Member 2001 has the book
+- Member 2002 cannot get it
+
+
+Test Case 8.2 - Same Member Same Book
+Objective: Issue same book twice to same member (after return)
+
+Steps:
+1. Issue Book 1001 to Member 2001 (Record 5001)
+2. Return Record 5001
+3. Issue Book 1001 to Member 2001 again (Record new)
+
+Expected Result:
+- First issue succeeds
+- Return succeeds
+- Second issue succeeds with new Record ID
+- Book availability maintained
+
+
+Test Case 8.3 - Member After Return
+Objective: Member can issue new book after returning
+
+Prerequisites: Member has 3/3 books issued
+
+Steps:
+1. Member returns 1 book
+2. Member is now at 2/3
+3. Verify member can issue new book
+4. Issue succeeds
+
+Expected Result:
+- Member status updates to 3/3 again
+- New book issued successfully
+
+
+TEST SCENARIO 9: SEARCH VARIATIONS
+===================================
+
+Test Case 9.1 - Case Sensitivity in Search
+Objective: Verify search behavior with different cases
+
+Steps:
+1. Search Title: "gatsby" (lowercase)
+2. Search Title: "GATSBY" (uppercase)
+3. Search Title: "Gatsby" (mixed case)
+
+Expected Result:
+- All should find "The Great Gatsby"
+- Search is case-insensitive (strstr behavior)
+
+
+Test Case 9.2 - Author Search Precision
+Objective: Test author name partial matching
+
+Steps:
+1. Search: "Scott" (first name)
+2. Search: "Fitzgerald" (last name)
+3. Search: "F. Scott" (partial full name)
+
+Expected Result:
+- All find "F. Scott Fitzgerald"
+- Partial matching works correctly
+
+
+TEST SCENARIO 10: VALIDATION CHECKS
+====================================
+
+Test Case 10.1 - Non-existent Member
+Objective: Verify member existence check
+
+Steps:
+1. Try to issue book to Member ID: 9999
+
+Expected Result:
+- Message: "Member not found!"
+- No issue record created
+
+
+Test Case 10.2 - Non-existent Book
+Objective: Verify book existence check
+
+Steps:
+1. Issue to valid member
+2. Try to issue Book ID: 9999
+
+Expected Result:
+- Message: "Book not found!"
+- Issue fails
+
+
+TEST SCENARIO 11: SYSTEM STRESS
+================================
+
+Test Case 11.1 - Multiple Books
+Objective: System handles large number of books
+
+Steps:
+1. Add 50+ books to library
+2. Display all books
+3. Search for various books
+4. Issue and return multiple times
+
+Expected Result:
+- System handles smoothly
+- Search remains fast
+- Display formatted correctly
+
+
+TEST SCENARIO 12: WORKFLOW EXAMPLE
+===================================
+
+Complete Workflow:
+
+Day 1:
+1. Library opened, add 10 books
+2. Register 5 members
+
+Day 2:
+3. Members issue 8 books
+4. Check issued books list (shows 8 active)
+
+Day 3:
+5. Members return 3 books
+6. Check issued books list (shows 5 active)
+7. Verify returned books available for new issue
+
+Day 4:
+8. Search for books by author
+9. Issue returned books to other members
+10. Exit and restart
+11. Verify all data persists
+
+
+EXPECTED OUTPUT EXAMPLES
+
+Add Book Output:
+   Book Added Successfully!
+   Book ID: 1001
+
+Register Member Output:
+   Member Registered Successfully!
+   Member ID: 2001
+
+Issue Book Output:
+   Book Issued Successfully!
+   Issue Record ID: 5001
+   Due Date: 15-06-2026
+
+Return Book Output:
+   Book Returned Successfully!
+   Return Date: 20-06-2026
+
+Search Result:
+   Book ID      : 1001
+   Title        : The Great Gatsby
+   Author       : F. Scott Fitzgerald
+   ISBN         : 978-0-7432-7356-5
+   Total Copies : 5
+   Available    : 4
+
+
+PERFORMANCE TESTING
+===================
+
+Test with different loads:
+- 20 books, 10 members: Instant response
+- 100 books, 50 members: Smooth operation
+- 500 books, 200 members: Noticeable delay on display
+- 1000+ records: May need database optimization
+
+
+COMMON SCENARIOS
+================
+
+Scenario A: Regular Library Operations
+1. Morning: Check all available books
+2. Mid-day: Issue books to members
+3. Afternoon: Members return books
+4. Evening: Search and organize inventory
+
+Scenario B: New Member Book Exploration
+1. Register new member
+2. Search for books by favorite author
+3. Issue first book
+4. Return and issue another
+
+Scenario C: Popular Book Tracking
+1. Add popular book (10 copies)
+2. Track issues as members take books
+3. View when all copies are issued
+4. Monitor returns for re-issue
+
+
+DEBUGGING CHECKLIST
+===================
+
+If tests fail:
+[ ] Check files exist in correct directory
+[ ] Verify read/write permissions
+[ ] Delete .dat files and start fresh
+[ ] Check member/book IDs are correct
+[ ] Verify issue record IDs for returns
+[ ] Check date format is correct
+[ ] Ensure book has available copies
+[ ] Confirm member doesn't exceed 3-book limit
+[ ] Verify file corruption didn't occur
+
+
+SUCCESS CRITERIA
+================
+
+All tests pass if:
+- Books can be added and retrieved
+- Members can be registered
+- Books can be issued within limits
+- Books can be returned successfully
+- Search finds correct books
+- Availability counts are accurate
+- Data persists after restart
+- Invalid operations are rejected
+- Dates are recorded correctly
